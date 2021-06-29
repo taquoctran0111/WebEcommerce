@@ -32,8 +32,8 @@
                                     <td>{{$value['name']}}</td>
                                     <td>{{$value['parent_id']}}</td>
                                     <td>
-                                        <a href="#" class = "btn btn-secondary">Edit</a>
-                                        <a href="#" class = "btn btn-danger">Delete</a>
+                                        <a href="{{ route('categories.edit', ['id' => $value['id']]) }}" class = "btn btn-secondary">Edit</a>
+                                        <a href="{{ route('categories.delete', ['id' => $value['id']]) }}" class = "btn btn-danger">Delete</a>
                                     </td>
                                 </tr>
                                 @endforeach
