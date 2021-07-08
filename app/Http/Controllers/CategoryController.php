@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\ProductCategory;
 use App\Components\Recusive;
+use Illuminate\Support\Facades\Log;
 
 class CategoryController extends Controller
 {
@@ -27,10 +28,10 @@ class CategoryController extends Controller
         $htmlOption = $this->getCategory($parentId);
         return View('admin.productcategory.add', compact('htmlOption'));
     }
-    
+
     public function index()
     {
-        $categoryList = $this->productCategory->paginate(10);
+        $categoryList = $this->productCategory->paginate(5);
         return View('admin.productcategory.index', compact('categoryList'));
     }
     public function store(Request $request)
@@ -42,12 +43,12 @@ class CategoryController extends Controller
         ]);
         return redirect()->route('categories.index');
     }
-    
+
     public function edit($id)
     {
         $category = $this->productCategory->find($id);
         $htmlOption = $this->getCategory($category->parent_id);
-        return View('admin.productcategory.edit', compact('category','htmlOption'));
+        return View('admin.productcategory.edit', compact('category', 'htmlOption'));
     }
     public function update($id, Request $request)
     {
@@ -60,7 +61,9 @@ class CategoryController extends Controller
     }
     public function delete($id)
     {
-        $this->productCategory->find($id)->delete();
+        $category = $this->productCategory->all();
+        $category->first()->where('parent_id', $id)->delete();
+        $category->find($id)->delete();
         return redirect()->route('categories.index');
     }
 }
